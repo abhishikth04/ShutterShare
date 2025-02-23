@@ -1,0 +1,57 @@
+<>
+      <Navbar/>
+      <section className="h-150 w-full border border-amber-50 flex flex-row justify-center items-center 
+      overflow-hidden">
+
+        <div className="text-white text-9xl font-mono position absolute left-1">
+          <p>Shutter</p>
+        </div>
+
+      <div>
+        <motion.img src={Shutter} alt="Shutter" className="h-90 z-50"
+        initial={{ opacity: 0}}
+        animate={{ rotate: 270, opacity: 1}}
+        transition={{ duration: 3, ease: "linear" }}/>
+      </div>
+
+      <div className="text-white text-9xl font-mono position absolute right-38 z-30">
+          <p>Share</p>
+        </div>
+
+      
+
+      </section>
+  </> 
+
+
+
+
+  2. 
+
+   <>
+      <Navbar/>
+      <section className="h-[550px] w-full border border-amber-50 flex flex-row justify-center items-center 
+      overflow-hidden">
+
+        <div className="text-white text-9xl font-mono position absolute left-1">
+          <p>Shutter</p>
+        </div>
+
+      <div>
+        <motion.img src={Shutter} alt="Shutter" className="h-90 z-50"
+        initial={{ opacity: 0}}
+        animate={{ rotate: 270, opacity: 1}}
+        transition={{ duration: 3, ease: "linear" }}/>
+      </div>
+
+      <div className="text-white text-9xl font-mono position absolute right-34 z-30">
+        <div className="flex flex-row justify-between space-x-4">
+          <p>Share</p>
+          <SendHorizontal size={40}/>
+          </div>
+        </div>
+
+      
+
+      </section>
+  </> 
