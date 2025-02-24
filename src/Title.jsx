@@ -1,17 +1,14 @@
 import { motion } from "framer-motion";
-import Navbar from "./Navbar";
 import { SendHorizontal } from 'lucide-react';
 import Shutter from "./assets/Shutter.png";
 
-const App = () => {
-  return (
-    <>
-      <Navbar />
+const Title = () => {
+    return(
 
-      <section className="relative flex justify-center items-center pt-20 overflow-hidden">
+        <section className="relative flex justify-center items-center pt-20 overflow-hidden">
         
         {/* Container for Everything */}
-        <div className="flex items-center justify-center gap-4 relative">
+        <div className="flex items-center justify-center gap-3 relative">
           
           {/* Shutter Text Animation (Slides Left, Behind Image) */}
           <motion.div 
@@ -19,19 +16,19 @@ const App = () => {
             style={{ overflow: "hidden" }}  
             initial={{ x: 200, width: 0 }}
             animate={{ x: 0, width:"100%" }}
-            transition={{ duration: 4, ease: "easeIn", delay: 3 }}
+            transition={{ duration: 3, ease: "easeIn", delay: 0.9 }}
           >
-            <p className="text-white text-[130px]">Shutter</p>
+            <p className="text-white text-[99px] w-114 font-bold drop-shadow-[1px_2px_6px_white]">SHUTTER</p>
           </motion.div>
 
           {/* Shutter Image (Higher z-index to Stay on Top) */}
           <motion.img 
             src={Shutter} 
             alt="Shutter" 
-            className="h-[360px] relative z-20"  // Higher z-index
-            initial={{ opacity: 0 }}
+            className="h-[360px] relative z-20 saturate-150"  // Higher z-index
+            initial={{ opacity: 1 }}
             animate={{ rotate: [0, 270], opacity: 1 }}
-            transition={{ duration: 5, ease: "linear", delay: 2 }}
+            transition={{ duration: 4, ease: "linear", delay: 0.2 }}
           />
 
           {/* Share Text Animation (Slides Right, Behind Image) */}
@@ -40,19 +37,18 @@ const App = () => {
             style={{ overflow: "hidden" }}  
             initial={{ x: -200, width: 0 }}
             animate={{ x: 0, width:"100%" }}
-            transition={{ duration: 4, ease: "easeIn", delay: 3 }}
+            transition={{ duration: 3, ease: "easeIn", delay: 0.9 }}
           >
             <div className="flex flex-row">
-              <p className="text-white text-[130px]">Share</p> 
-              <SendHorizontal className="text-white" size={72} />
+              <p className="text-white text-[99px] font-bold drop-shadow-[1px_2px_6px_white]">SHARE</p> 
+              <SendHorizontal className="text-white" size={72} />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
           </motion.div>
 
         </div>
 
       </section>
-    </> 
-  );
+    );
 }
 
-export default App;
+export default Title;
