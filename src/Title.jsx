@@ -7,12 +7,12 @@ const Title = () => {
 
         <section className="relative flex justify-center items-center pt-20 overflow-hidden">
         
-        {/* Container for Everything */}
+        
         <div className="flex items-center justify-center gap-3 relative">
           
-          {/* Shutter Text Animation (Slides Left, Behind Image) */}
+         
           <motion.div 
-            className="relative z-10"  // Lower z-index to stay behind image
+            className="relative z-10"  
             style={{ overflow: "hidden" }}  
             initial={{ x: 200, width: 0 }}
             animate={{ x: 0, width:"100%" }}
@@ -21,19 +21,19 @@ const Title = () => {
             <p className="text-white text-[99px] w-114 font-bold drop-shadow-[1px_2px_6px_white]">SHUTTER</p>
           </motion.div>
 
-          {/* Shutter Image (Higher z-index to Stay on Top) */}
+          
           <motion.img 
             src={Shutter} 
             alt="Shutter" 
-            className="h-[360px] relative z-20 saturate-150"  // Higher z-index
+            className="h-[360px] relative z-20 saturate-150"  
             initial={{ opacity: 1 }}
             animate={{ rotate: [0, 270], opacity: 1 }}
             transition={{ duration: 4, ease: "linear", delay: 0.2 }}
           />
 
-          {/* Share Text Animation (Slides Right, Behind Image) */}
+          
           <motion.div 
-            className="relative z-10"  // Lower z-index to stay behind image
+            className="relative z-10"  
             style={{ overflow: "hidden" }}  
             initial={{ x: -200, width: 0 }}
             animate={{ x: 0, width:"100%" }}
