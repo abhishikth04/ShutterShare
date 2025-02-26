@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 const Navbar = () => {
 
     return (
-        <motion.nav className="h-15 bg-#10175a flex flex-row justify-between py-2 px-4 text-white shadow-2xl
-        text-2xl" initial = {{y: -100 , opacity: 0}}
+        <motion.nav className="absolute top-0 left-0 w-full h-20 bg-#10175a flex flex-row justify-between py-2 px-4 text-white shadow-2xl
+        text-2xl z-60" initial = {{y: -100 , opacity: 0}}
                   animate = {{y: 0 , opacity: 1}}
                   transition = {{duration: 1, ease: "easeOut"}}>
             <div className='flex flex-row'>
@@ -19,10 +19,10 @@ const Navbar = () => {
             </div>
 
             <ul className="flex flex-row">
-                <li className="px-2.5"><a href="#">Home</a></li>
-                <li className="px-2.5"><a href="#">About</a></li>
-                <li className="px-2.5"><a href="#">Services</a></li>
-                <li className="px-2.5"><a href="#">Login</a></li>
+                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a  href="#">HOME</a></li>
+                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">ABOUT</a></li>
+                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">SERVICES</a></li>
+                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">LOGIN</a></li>
             </ul>
         </motion.nav>
     );
