@@ -70,7 +70,7 @@ const Title = () => {
         </div>
       </section>
 
-      {/* Next Content */}
+      {/* Next Content  */}
       <section className="h-screen flex justify-center bg-black px-2.5 py-2.5">
         <motion.div
           className="text-center"
