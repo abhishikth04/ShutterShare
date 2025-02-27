@@ -100,7 +100,7 @@ const Features = () => {
           <p className="text-gray-300 mt-10">
             <i>A private space for vloggers and YouTubers to share personal moments, travel memories, and daily life 
                 snapshots without the pressure of likes or comments. A simple and relaxed
-                 way to connect with close friends and family through photos and short videos.</i>
+                 way to connect with close friends and family through photos and short videos. </i>
           </p>
         </motion.div>
 
