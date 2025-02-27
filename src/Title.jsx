@@ -19,7 +19,7 @@ const Title = () => {
   return (
     <>
       <section
-        className="relative flex flex-col justify-start items-center h-[300vh] bg-black overflow-hidden"
+        className="relative flex flex-col justify-start items-center h-[250vh] bg-black overflow-hidden"
         ref={containerRef}
       >
         
@@ -44,8 +44,8 @@ const Title = () => {
             <motion.img
               src={Shutter}
               alt="Shutter"
-              className="relative z-20 w-[400px] h-auto saturate-200"
-              initial={{ rotate: 270, scale: 1 }} 
+              className="relative z-20 w-[400px] h-auto saturate-200 drop-shadow-[0px_1px_12px_grey]"
+              initial={{ rotate: 270, scale: 1.12 }} 
               animate={{ rotate: 0 }} 
               style={{ scale, rotate, opacity }}
               transition={{ duration: 3.5, ease: "easeInOut" }}
@@ -68,26 +68,10 @@ const Title = () => {
             </motion.div>
           </motion.div>
         </div>
-      </section>
 
-      {/* Next Content  */}
-      <section className="h-screen flex justify-center bg-black px-2.5 py-2.5">
-        <motion.div
-          className="text-center"
-          style={{ opacity: contentOpacity }}
-        >
-          <h1 className="text-white text-5xl font-bold">Welcome to ShutterShare!</h1>
-          <p className="text-gray-300 mt-4 text-lg max-w-2xl">
-            A seamless way to share your best memories effortlessly.
-          </p>
-        </motion.div>
       </section>
-
-      <section>
-        <div>
-          <h1 className="font-[50px] text-white">Hello World</h1>
-        </div>
-      </section>
+     
+      
     </>
   );
 };
