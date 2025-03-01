@@ -1,10 +1,7 @@
-import { motion } from "framer-motion";
 import Navbar from "./Navbar";
-import { SendHorizontal } from 'lucide-react';
-import Shutter from "./assets/Shutter.png";
 import Title from "./Title";
-import Hero from "./Hero";
 import Features from "./Features";
+import HowItWorks from "./HowItWorks";
 
 const App = () => {
   return (
@@ -12,6 +9,7 @@ const App = () => {
       <Navbar />
       <Title/>
       <Features/>
+      <HowItWorks/>
       
     </> 
   );

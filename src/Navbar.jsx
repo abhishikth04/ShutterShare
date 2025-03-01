@@ -22,7 +22,7 @@ const Navbar = () => {
                 <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a  href="#">HOME</a></li>
                 <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">ABOUT</a></li>
                 <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">SERVICES</a></li>
-                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_grey] hover:text-3xl"><a href="#">LOGIN</a></li>
+                <li className="px-3 py-1.5 transition-all duration-300 ease-in-out hover:font-semibold hover:drop-shadow-[1px_2px_6px_red] hover:text-3xl hover:text-red-400"><a href="#">LOGIN</a></li>
             </ul>
         </motion.nav>
     );

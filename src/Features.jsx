@@ -9,7 +9,7 @@ const Features = () => {
 
       {/* Website Name & Subtitle */}
       <motion.h1 
-      className="text-white font-bold text-6xl text-center"
+      className="text-white font-bold text-6xl text-center drop-shadow-[0px_1px_3px_white]"
       initial = {{ y:-50, opacity:0 }}
       animate = {{ y:0, opacity:1 }}
       transition = {{ duration: 2.8 }}>Welcome to ShutterShare</motion.h1>

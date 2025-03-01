@@ -10,16 +10,16 @@ const Title = () => {
     offset: ["start start", "end start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 9]); 
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 8]); 
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 520]); 
   const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]); 
-  const textOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]); 
+  const textOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]); 
   const contentOpacity = useTransform(scrollYProgress, [0.65, 1], [0, 1]); 
 
   return (
     <>
       <section
-        className="relative flex flex-col justify-start items-center h-[250vh] bg-black overflow-hidden"
+        className="relative flex flex-col justify-start items-center h-[180vh] bg-black overflow-hidden"
         ref={containerRef}
       >
         
