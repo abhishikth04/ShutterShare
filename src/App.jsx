@@ -2,6 +2,7 @@ import Navbar from "./Navbar";
 import Title from "./Title";
 import Features from "./Features";
 import HowItWorks from "./HowItWorks";
+import Footer from "./Footer";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <Title/>
       <Features/>
       <HowItWorks/>
+      <Footer/>
       
     </> 
   );

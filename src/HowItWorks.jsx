@@ -9,7 +9,7 @@ const steps = [
   { id: 1, title: "Create or Join a Space", details: "Generate a unique code to create a new space or enter a code to join an existing one.", img: joinSpace },
   { id: 2, title: "Upload & Browse Photos", details: "Upload photos into the shared gallery and scroll through all images uploaded by others.", img: uploadPhotosImg },
   { id: 3, title: "Select & Save Favorites", details: "Choose the best photos from the gallery and save them to your personal collection.", img: selectFavoritesImg },
-  { id: 4, title: "Close the Space", details: "The space auto-closes after a set time, ensuring only temporary storage.", img: closeSpaceImg }
+  { id: 4, title: "Close the Space", details: "Manually close the space or The space auto-closes after a set time, ensuring only temporary storage.", img: closeSpaceImg }
 ];
 
 const gradients = [
@@ -73,6 +73,14 @@ const HowItWorks = () => {
           );
         })}
       </div>
+        <h1 className="text-gray-500 text-3xl font-semibold mt-9">Start Using ShutterShare Today </h1>
+
+      <motion.button 
+      initial = {{y: -20}}
+      animate = {{y: 0}}
+      transition = {{repeat: Infinity , duration: 1.6 , ease: "easeInOut"}}
+      className="h-10 w-[170px] bg-red-500 text-2xl rounded-lg mt-7 transition duration-200  
+      hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><i>Get Started &#8594;</i></motion.button>
     </section>
   );
 };
