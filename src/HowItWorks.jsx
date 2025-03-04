@@ -76,10 +76,10 @@ const HowItWorks = () => {
         <h1 className="text-gray-500 text-3xl font-semibold mt-9">Start Using ShutterShare Today </h1>
 
       <motion.button 
-      initial = {{y: -20}}
+      initial = {{y: -15}}
       animate = {{y: 0}}
       transition = {{repeat: Infinity , duration: 1.6 , ease: "easeInOut"}}
-      className="h-10 w-[170px] bg-red-500 text-2xl rounded-lg mt-7 transition duration-200  
+      className="h-10 w-[170px] bg-red-500 text-2xl rounded-lg mt-7 transition-discrete duration-200  
       hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><i>Get Started &#8594;</i></motion.button>
     </section>
   );
