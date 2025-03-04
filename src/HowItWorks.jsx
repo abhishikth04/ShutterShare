@@ -80,7 +80,7 @@ const HowItWorks = () => {
       animate = {{y: 0}}
       transition = {{repeat: Infinity , duration: 1.6 , ease: "easeInOut"}}
       className="h-10 w-[170px] bg-red-500 text-2xl rounded-lg mt-7 transition-discrete duration-200  
-      hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><i>Get Started &#8594;</i></motion.button>
+      hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><i>Get Started &#8594; </i></motion.button>
     </section>
   );
 };
