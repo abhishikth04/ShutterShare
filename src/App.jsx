@@ -3,6 +3,7 @@ import Title from "./Title";
 import Features from "./Features";
 import HowItWorks from "./HowItWorks";
 import Footer from "./Footer";
+import PricingCarousel from "./PricingCarousel";
 
 const App = () => {
   return (
@@ -11,7 +12,10 @@ const App = () => {
       <Title/>
       <Features/>
       <HowItWorks/>
+      <PricingCarousel/>
       <Footer/>
+
+      
       
     </> 
   );
