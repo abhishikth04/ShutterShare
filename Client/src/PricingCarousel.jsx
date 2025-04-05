@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -40,8 +41,13 @@ const pricingPlans = [
 export default function PricingCarousel() {
   return (
 
-    <div className="flex justify-center items-center h-[400px] bg-black w-full p-3.5 overflow-visible">
+    <motion.div className="flex justify-center items-center h-[400px] bg-black w-full p-3.5 overflow-visible"
+    initial={{ opacity: 0, x: 80 }} 
+       whileInView={{ opacity: 1, x: 0 }} 
+       transition={{ duration: 1, ease: "easeOut" }} 
+       viewport={{ once: true }}>
       <Swiper
+        lazy={{ loadPrevNext: true }}
         effect="coverflow"
         grabCursor
         centeredSlides
@@ -69,6 +75,6 @@ export default function PricingCarousel() {
           </SwiperSlide>
         ))}
       </Swiper>
-    </div>
+    </motion.div>
   );
 }

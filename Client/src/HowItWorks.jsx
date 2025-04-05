@@ -25,7 +25,11 @@ const HowItWorks = () => {
   return (
     <section className="flex flex-col justify-center items-center bg-black py-10 px-6">
         <h1 className="text-white text-5xl font-semibold mb-10 drop-shadow-[0px_1px_5px_gray]">How ShutterShare works</h1>
-      <div className="w-full max-w-5xl flex flex-row justify-center items-center gap-3">
+      <motion.div className="w-full max-w-5xl flex flex-row justify-center items-center gap-3"
+       initial={{ opacity: 0, x: -80 }} 
+       whileInView={{ opacity: 1, x: 0 }} 
+       transition={{ duration: 1, ease: "easeOut" }}
+       viewport={{ once: true }} >
         {steps.map((step, index) => {
           const isOpen = expanded === step.id;
           const defaultGradient = gradients[index];
@@ -35,7 +39,9 @@ const HowItWorks = () => {
               key={step.id}
               className="relative flex flex-col items-center justify-start min-h-[350px] text-white text-center cursor-pointer px-4"
               layout
+              
               animate={{
+                
                 width: isOpen ? "54%" : "18%", 
                 backgroundImage: isOpen ? "linear-gradient(135deg, #1F2937, #374151)" : defaultGradient,
                 borderRadius: isOpen ? 20 : 0
@@ -72,7 +78,7 @@ const HowItWorks = () => {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
         <h1 className="text-gray-500 text-3xl font-semibold mt-9">Start Using ShutterShare Today </h1>
 
       <motion.button 
