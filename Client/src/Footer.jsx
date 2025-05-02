@@ -1,4 +1,5 @@
 import { Instagram , Youtube , Linkedin , Facebook} from 'lucide-react';
+import { Link }  from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -30,17 +31,15 @@ const Footer = () => {
                 </a>
             </div>
 
-
-
-
         </div>
         <div>
             <p className="mb-2 text-gray-300">Quick Links</p>
-            <ul className="text-red-500">
-                <li><a href="">About</a></li>
-                <li><a href="">Services</a></li>
-                <li><a href="">Login</a></li>
+            <ul className="text-red-500 space-y-1">
+                <li><Link to="/about">About</Link></li>
+                <li><Link to="/services">Services</Link></li>
+                <li><Link to="/login">Login</Link></li>
             </ul>
+
         </div>
 
         <div>

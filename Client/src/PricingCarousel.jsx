@@ -42,7 +42,7 @@ export default function PricingCarousel() {
   return (
 
     <motion.div className="flex justify-center items-center h-[400px] bg-black w-full p-3.5 overflow-visible"
-    initial={{ opacity: 0, x: 80 }} 
+    initial={{ opacity: 0.8 , x: 20 }} 
        whileInView={{ opacity: 1, x: 0 }} 
        transition={{ duration: 1, ease: "easeOut" }} 
        viewport={{ once: true }}>

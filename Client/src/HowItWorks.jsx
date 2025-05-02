@@ -4,6 +4,7 @@ import joinSpace from "./assets/CreateJoin.jpg";
 import uploadPhotosImg from "./assets/Upload.png";
 import selectFavoritesImg from "./assets/Favourite.jpg";
 import closeSpaceImg from "./assets/Closed.png";
+import { Link } from 'react-router-dom';
 
 const steps = [
   { id: 1, title: "Create or Join a Space", details: "Generate a unique code to create a new space or enter a code to join an existing one.", img: joinSpace },
@@ -86,7 +87,7 @@ const HowItWorks = () => {
       animate = {{y: 0}}
       transition = {{repeat: Infinity , duration: 1.6 , ease: "easeInOut"}}
       className="h-10 w-[170px] bg-red-500 text-2xl rounded-lg mt-7 transition-discrete duration-200  
-      hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><i>Get Started &#8594; </i></motion.button>
+      hover:w-[175px] hover:h-11 hover:bg-red-900 hover:font-semibold"><Link to='/signup'><i>Get Started &#8594; </i></Link></motion.button>
     </section>
   );
 };
