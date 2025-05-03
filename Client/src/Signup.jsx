@@ -28,7 +28,7 @@ export default function Signup() {
           Move the Moments
         </h2>
         <p className="text-gray-400 text-[20px] ml-4.5 mt-1.5">
-          <i>Easily share your memories. make them accessible to your people anywhere around</i>
+          <i>Easily share your Memories. Make them accessible to your people anywhere around</i>
         </p>
       </div>
 
