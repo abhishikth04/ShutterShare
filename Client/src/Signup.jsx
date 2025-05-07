@@ -15,9 +15,34 @@ export default function Signup() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form); // Replace with fetch to backend
+    
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/signup" , {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+
+      });
+
+      const data = await res.json();
+      console.log(`Signup Response` , data);
+
+      if(res.ok){
+        alert("SignUp Successful !. Please Login");
+      }else{
+        alert(data.error || "Data Error. SignUp failed.");
+      }
+
+
+    } catch (err) {
+      console.error("SignUp Error" , err);
+      alert("Something went Wrong..");
+    }
+
   };
 
   return (

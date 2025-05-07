@@ -11,9 +11,32 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form); // Replace with actual fetch to backend
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login" , {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(form)
+
+      });
+
+      const data = await res.json();
+      console.log(`Login Response` , data);
+
+      if(res.ok){
+        alert("Login Successful !");
+      }else{
+        alert(data.error || "Data Error. Login failed.");
+      }
+
+
+    } catch (err) {
+      console.error("Login Error" , err);
+      alert("Something went Wrong..");
+    }
   };
 
   return (
