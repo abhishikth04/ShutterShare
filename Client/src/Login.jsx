@@ -1,11 +1,13 @@
 // src/Login.jsx
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LoginBack from "./assets/LoginBack.jpg";
 
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,7 +16,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login" , {
+      const res = await fetch("/api/auth/login" , {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -27,7 +29,9 @@ export default function Login() {
       console.log(`Login Response` , data);
 
       if(res.ok){
-        alert("Login Successful !");
+        // alert("Login Successful !");
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/dashboard");
       }else{
         alert(data.error || "Data Error. Login failed.");
       }
