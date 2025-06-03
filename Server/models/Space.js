@@ -15,10 +15,20 @@ const spaceSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     }],
-    images: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Image"
-    }],
+    images: [
+        {
+            url: String,
+            filename: String,
+            uploadedBy: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+            },
+            uploadedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
     isPublic: {
         type: Boolean,
         default: false,
@@ -35,5 +45,3 @@ const spaceSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Space", spaceSchema);
-
-

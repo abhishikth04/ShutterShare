@@ -11,6 +11,7 @@ function generateCode(length = 6) {
 
 const createSpace = async (req, res) => {
   const { name, description, creatorId } = req.body;
+  console.log(req.body);
 
   try {
     let publicCode;
@@ -26,6 +27,7 @@ const createSpace = async (req, res) => {
       name,
       description,
       creator: creatorId,
+      members: [creatorId],
       publicCode,
       members: [creatorId],
     });
@@ -57,7 +59,37 @@ const joinSpace = async (req, res) => {
   }
 };
 
+const uploadImage = async (req, res) => {
+  const { spaceId, userId } = req.body;
+  const file = req.file;
+
+  if (!file) return res.status(400).json({ message: "No file uploaded" });
+
+  try {
+    const space = await Space.findById(spaceId);
+    if (!space) return res.status(404).json({ message: "Space not found" });
+
+    if (!space.members.includes(userId)) {
+      return res.status(403).json({ message: "User not in this space" });
+    }
+
+    const imageEntry = {
+      url: `/uploads/${file.filename}`,
+      filename: file.originalname,
+      uploadedBy: userId,
+    };
+
+    space.images.push(imageEntry);
+    await space.save();
+
+    res.status(200).json({ message: "Image uploaded", image: imageEntry });
+  } catch (err) {
+    res.status(500).json({ message: "Error uploading image", error: err.message });
+  }
+};
+
 module.exports = {
   createSpace,
   joinSpace,
+  uploadImage
 };
