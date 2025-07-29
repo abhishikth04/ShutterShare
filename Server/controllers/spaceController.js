@@ -1,4 +1,4 @@
-const Space = require("../models/Space.js");
+const Space = require("../models/Space");
 
 function generateCode(length = 6) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -11,8 +11,9 @@ function generateCode(length = 6) {
 
 const createSpace = async (req, res) => {
   const { name, description, creatorId } = req.body;
-  console.log(req.body);
 
+  const defaultTimeLimit = 300; // 5 hours in minutes
+ const expiresAt = new Date(Date.now() + defaultTimeLimit * 60 * 1000);
   try {
     let publicCode;
     let exists = true;
@@ -29,7 +30,7 @@ const createSpace = async (req, res) => {
       creator: creatorId,
       members: [creatorId],
       publicCode,
-      members: [creatorId],
+      expiresAt,
     });
 
     await newSpace.save();
@@ -46,7 +47,6 @@ const joinSpace = async (req, res) => {
     const space = await Space.findOne({ publicCode });
 
     if (!space) return res.status(404).json({ message: "Invalid code" });
-
     if (space.members.includes(userId))
       return res.status(400).json({ message: "User already joined" });
 
@@ -59,11 +59,12 @@ const joinSpace = async (req, res) => {
   }
 };
 
-const uploadImage = async (req, res) => {
+const uploadImages = async (req, res) => {
   const { spaceId, userId } = req.body;
-  const file = req.file;
 
-  if (!file) return res.status(400).json({ message: "No file uploaded" });
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: "No images uploaded" });
+  }
 
   try {
     const space = await Space.findById(spaceId);
@@ -73,23 +74,24 @@ const uploadImage = async (req, res) => {
       return res.status(403).json({ message: "User not in this space" });
     }
 
-    const imageEntry = {
-      url: `/uploads/${file.filename}`,
+    const imageEntries = req.files.map(file => ({
+      url: file.path,
       filename: file.originalname,
       uploadedBy: userId,
-    };
+    }));
 
-    space.images.push(imageEntry);
+    space.images.push(...imageEntries);
     await space.save();
 
-    res.status(200).json({ message: "Image uploaded", image: imageEntry });
+    res.status(200).json({ message: "Images uploaded", images: imageEntries });
   } catch (err) {
-    res.status(500).json({ message: "Error uploading image", error: err.message });
+    console.error("Image Upload Error:", err);
+    res.status(500).json({ message: "Error uploading images", error: err.message });
   }
 };
 
 module.exports = {
   createSpace,
   joinSpace,
-  uploadImage
+  uploadImages,
 };

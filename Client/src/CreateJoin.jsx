@@ -1,5 +1,8 @@
 import { useState } from "react"
 import CreateSpaceModal from "./CreateSpaceModal";
+import { useNavigate } from "react-router-dom";
+
+
 
 const options = [
   {
@@ -23,16 +26,26 @@ const options = [
 ]
 
 export default function CreateJoin() {
+
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [createdSpace, setCreatedSpace] = useState(null)
+
+  const navigate = useNavigate();
 
   const handleClick = (action) => {
     if (action === "create") {
       setShowCreateModal(true)
     } else if (action === "join") {
-      alert("Join Space popup coming next!") // You’ll replace this with JoinSpaceModal
+      alert("Join Space popup coming next!") // To be replaced by JoinSpaceModal
     } else {
       alert("Navigate to Personal Space (to be implemented)")
     }
+  }
+
+  const handleSpaceCreated = (space) => {
+    console.log("✅ Space created:", space)
+    setCreatedSpace(space)
+    navigate("/space", { state: { space } })
   }
 
   return (
@@ -54,7 +67,12 @@ export default function CreateJoin() {
         ))}
       </div>
 
-      {showCreateModal && <CreateSpaceModal onClose={() => setShowCreateModal(false)} />}
+      {showCreateModal && (
+        <CreateSpaceModal
+          onClose={() => setShowCreateModal(false)}
+          onCreated={handleSpaceCreated}
+        />
+      )}
     </>
   )
 }

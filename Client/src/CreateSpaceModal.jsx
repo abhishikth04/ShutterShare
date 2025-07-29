@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import axios from "axios";
 
@@ -7,39 +6,38 @@ export default function CreateSpaceModal({ onClose, onCreated = () => {} }) {
   const [description, setDescription] = useState("");
 
   const handleCreate = async () => {
-  const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user?.id;
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?.id;
 
-  if (!userId || !token) {
-    alert("Missing user or token. Please login again.");
-    return;
-  }
+    if (!userId || !token) {
+      alert("Missing user or token. Please login again.");
+      return;
+    }
 
-  const data = {
-    name,
-    description,
-    creatorId: userId, // ✅ FIXED TYPING
+    const data = {
+      name,
+      description,
+      creatorId: userId,
+    };
+
+    console.log("Sending request with:", data, "Token:", token);
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/spaces/create", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      onCreated(res.data.space); // ✅ Notify parent
+      onClose(); // ✅ Close modal after creation
+    } catch (err) {
+      console.error("Create Space Error:", err);
+      console.error("Error Response Data:", err.response?.data);
+      alert("Error: " + (err.response?.data?.message || "Something went wrong."));
+    }
   };
-
-  console.log("Sending request with:", data, "Token:", token);
-
-  try {
-    const res = await axios.post("http://localhost:5000/api/spaces/create", data, {
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ Token should ONLY go here
-      },
-    });
-
-    onCreated(res.data.space);
-    onClose();
-  } catch (err) {
-    console.error("Create Space Error:", err);
-    console.error("Error Response Data:", err.response?.data);
-    alert("Error: " + (err.response?.data?.message || "Something went wrong."));
-  }
-};
-
 
   return (
     <div className="fixed inset-0 backdrop-blur-xl flex items-center justify-center z-50 min-h-screen">

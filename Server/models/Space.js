@@ -41,7 +41,12 @@ const spaceSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    expiresAt: {
+        type: Date,
+        required: true,
+    },
+
 });
 
 module.exports = mongoose.model("Space", spaceSchema);
