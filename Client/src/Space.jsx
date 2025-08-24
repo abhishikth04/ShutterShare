@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import UploadImagesModal from "./UploadImagesModal"; // Modal to upload images
-import { uploadToCloudinary } from "./uploadToCloudinary"; // 💡 Cloudinary upload helper
+import UploadImagesModal from "./UploadImagesModal";
 
 export default function Space() {
   const { id } = useParams();
   const [spaceData, setSpaceData] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchSpace();
@@ -17,97 +14,83 @@ export default function Space() {
 
   async function fetchSpace() {
     try {
-      const res = await axios.get(`http://localhost:5000/api/spaces/${id}`);
+      const token = localStorage.getItem("token"); // ✅ grab token from localStorage
+
+      const res = await axios.get(`http://localhost:5000/api/spaces/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ send token to backend
+        },
+      });
+
       setSpaceData(res.data);
     } catch (err) {
       console.error("Failed to fetch space:", err);
     }
   }
 
-  async function handleUpload() {
-    if (selectedFiles.length === 0) return;
-
-    setUploading(true);
-
-    try {
-      // Upload images to Cloudinary
-      const uploadedImages = [];
-      for (let file of selectedFiles) {
-        const result = await UploadToCloudinary(file);
-        uploadedImages.push({
-          url: result.secure_url,
-          filename: result.public_id,
-        });
-      }
-
-      // Save image info to backend
-      await axios.post(`http://localhost:5000/api/spaces/upload/${id}`, {
-        images: uploadedImages,
-      });
-
-      setSelectedFiles([]);
-      setShowUploadModal(false);
-      fetchSpace(); // refresh
-    } catch (err) {
-      console.error("Error uploading images:", err);
-    } finally {
-      setUploading(false);
-    }
-  }
-
-  if (!spaceData) return <div>Loading space details...</div>;
-
-  const createdTime = new Date(spaceData.createdAt);
-  const expiryTime = new Date(createdTime.getTime() + 5 * 60 * 60 * 1000);
+  if (!spaceData) return <div className="text-center mt-10">Loading space details...</div>;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">📸 {spaceData.name}</h1>
-      <p className="text-gray-600">
-        Join Code: <strong>{spaceData.publicCode}</strong>
-      </p>
-      <p className="text-gray-500">Description: {spaceData.description}</p>
-      <p className="mt-2 text-red-600">
-        🕒 Expires At: {expiryTime.toLocaleString()}
-      </p>
+    <div className="min-h-screen bg-black p-6 flex flex-col items-center">
+      {/* Title */}
+      <h1 className="text-6xl font-semibold text-gray-100 mb-3 text-center drop-shadow-[2px_2px_2px_white]">
+        <i>{spaceData.name}</i>
+      </h1>
 
-      {/* Upload Section */}
-      <div className="mt-6">
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={(e) => setSelectedFiles([...e.target.files])}
-        />
-        <button
-          onClick={handleUpload}
-          disabled={uploading || selectedFiles.length === 0}
-          className={`ml-2 px-4 py-2 rounded text-white ${
-            uploading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-600"
-          }`}
-        >
-          {uploading ? "Uploading..." : "Upload Images"}
-        </button>
+      {/* Description */}
+      <p className="text-gray-400 mb-6 text-center max-w-xl text-2xl">{spaceData.description}</p>
+
+      {/* Public code & expiry */}
+      <div className="w-full flex justify-between px-10 mb-10">
+        <span className="text-lg font-medium text-gray-500">
+          Public Code: <span className="font-mono text-blue-600 font-semibold text-2xl">{spaceData.publicCode}</span>
+        </span>
+        <span className="text-lg font-medium text-gray-500">
+          Expires At:{" "}
+          <span className="text-red-500">
+            {new Date(spaceData.expiresAt).toLocaleString()}
+          </span>
+        </span>
       </div>
 
-      {/* Image Gallery */}
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {spaceData.images &&
+      {/* Gallery */}
+      <div className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-3 gap-4">
+        {spaceData.images?.length > 0 ? (
           spaceData.images.map((img, index) => (
             <div key={index} className="relative">
               <img
                 src={img.url}
                 alt="uploaded"
-                className="rounded shadow w-full h-48 object-cover"
+                className="rounded-lg shadow-md w-full h-48 object-cover"
               />
-              <div className="absolute bottom-0 bg-black bg-opacity-50 text-white text-xs p-1 w-full text-center">
+              <div className="absolute bottom-0 bg-black bg-opacity-50 text-white text-xs p-1 w-full text-center rounded-b-lg">
                 Uploaded by: {img.uploadedBy?.name || "Unknown"}
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="col-span-full border-2 border-dashed border-gray-300 rounded-lg h-40 flex items-center justify-center text-gray-400">
+            No images yet
+          </div>
+        )}
       </div>
+
+      {/* Upload Button (bottom right fixed) */}
+      <button
+        onClick={() => setShowUploadModal(true)}
+        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-lg"
+      >
+        + Upload
+      </button>
+
+      {/* Upload Modal */}
+      {showUploadModal && (
+        <UploadImagesModal
+          spaceId={spaceData._id}
+          onClose={() => setShowUploadModal(false)}
+          onUploadComplete={fetchSpace} // refresh after upload
+        />
+      )}
     </div>
   );
 }

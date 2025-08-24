@@ -33,4 +33,19 @@ router.post('/:id/upload', authMiddleware, parser.single("image"), async (req, r
   }
 });
 
+// Get space by ID
+router.get('/:id', authMiddleware, async (req, res) => {
+  try {
+    const space = await Space.findById(req.params.id).populate("images.uploadedBy", "name");
+    if (!space) {
+      return res.status(404).json({ message: "Space not found" });
+    }
+    res.json(space);
+  } catch (error) {
+    console.error("Error fetching space:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 module.exports = router;

@@ -45,7 +45,7 @@ export default function CreateJoin() {
   const handleSpaceCreated = (space) => {
     console.log("✅ Space created:", space)
     setCreatedSpace(space)
-    navigate("/space", { state: { space } })
+     navigate(`/space/${space._id}`);
   }
 
   return (

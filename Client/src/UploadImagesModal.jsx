@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { uploadToCloudinary } from "./uploadToCloudinary";
+import axios from "axios";
 
-const UploadImagesModal = ({ onClose, onUploadComplete }) => {
+const UploadImagesModal = ({ spaceId, onClose, onUploadComplete }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
 
@@ -10,20 +10,34 @@ const UploadImagesModal = ({ onClose, onUploadComplete }) => {
   };
 
   const handleUpload = async () => {
-    setUploading(true);
-    try {
-      const uploadedUrls = [];
+    if (selectedFiles.length === 0) return;
 
+    setUploading(true);
+    const token = localStorage.getItem("token");
+
+    try {
       for (const file of selectedFiles) {
-        const url = await uploadToCloudinary(file);
-        uploadedUrls.push(url);
+        const formData = new FormData();
+        formData.append("image", file);
+
+        await axios.post(
+          `http://localhost:5000/api/spaces/${spaceId}/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
       }
 
-      // Pass uploaded image URLs to parent
-      onUploadComplete(uploadedUrls);
-      onClose(); // close modal
+      // Refresh gallery after upload
+      onUploadComplete();
+      onClose();
     } catch (error) {
       console.error("Error uploading images:", error);
+      alert("Upload failed. Please try again.");
     } finally {
       setUploading(false);
     }
