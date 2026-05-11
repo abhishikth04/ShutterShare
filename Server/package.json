@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node --dns-result-order=ipv4first ./node_modules/nodemon/bin/nodemon.js server.js"
   },
   "keywords": [],
   "author": "",
