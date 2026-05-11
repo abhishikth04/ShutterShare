@@ -4,7 +4,9 @@ import axios from "axios";
 import UploadImagesModal from "./UploadImagesModal";
 
 export default function Space() {
+
   const { id } = useParams();
+
   const [spaceData, setSpaceData] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
 
@@ -13,74 +15,144 @@ export default function Space() {
   }, [id]);
 
   async function fetchSpace() {
-    try {
-      const token = localStorage.getItem("token"); // ✅ grab token from localStorage
 
-      const res = await axios.get(`http://localhost:5000/api/spaces/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // ✅ send token to backend
-        },
-      });
+    try {
+
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        `http://localhost:5000/api/spaces/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setSpaceData(res.data);
+
     } catch (err) {
+
       console.error("Failed to fetch space:", err);
     }
   }
 
-  if (!spaceData) return <div className="text-center mt-10">Loading space details...</div>;
+  if (!spaceData) {
+
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-white text-2xl">
+        Loading Space...
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-black p-6 flex flex-col items-center">
-      {/* Title */}
-      <h1 className="text-6xl font-semibold text-gray-100 mb-3 text-center drop-shadow-[2px_2px_2px_white]">
-        <i>{spaceData.name}</i>
-      </h1>
 
-      {/* Description */}
-      <p className="text-gray-400 mb-6 text-center max-w-xl text-2xl">{spaceData.description}</p>
+    <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
 
-      {/* Public code & expiry */}
-      <div className="w-full flex justify-between px-10 mb-10">
-        <span className="text-lg font-medium text-gray-500">
-          Public Code: <span className="font-mono text-blue-600 font-semibold text-2xl">{spaceData.publicCode}</span>
-        </span>
-        <span className="text-lg font-medium text-gray-500">
-          Expires At:{" "}
-          <span className="text-red-500">
-            {new Date(spaceData.expiresAt).toLocaleString()}
-          </span>
-        </span>
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-blue-500/10 via-transparent to-transparent blur-3xl pointer-events-none" />
+
+      {/* Hero Section */}
+      <div className="relative z-10 flex flex-col items-center pt-20 px-6">
+
+        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-center">
+          {spaceData.name}
+        </h1>
+
+        <p className="text-gray-400 mt-4 text-center text-lg md:text-xl max-w-2xl leading-relaxed">
+          {spaceData.description}
+        </p>
+
+        {/* Metadata */}
+        <div className="flex flex-wrap justify-center gap-4 mt-8">
+
+          <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">
+            Code:
+            <span className="ml-2 font-mono text-blue-400">
+              {spaceData.publicCode}
+            </span>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">
+            Members:
+            <span className="ml-2 text-white">
+              {spaceData.members.length}
+            </span>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">
+            Expires:
+            <span className="ml-2 text-red-400">
+              {new Date(spaceData.expiresAt).toLocaleString()}
+            </span>
+          </div>
+
+        </div>
       </div>
 
       {/* Gallery */}
-      <div className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="relative z-10 mt-20 px-6 pb-24">
+
         {spaceData.images?.length > 0 ? (
-          spaceData.images.map((img, index) => (
-            <div key={index} className="relative">
-              <img
-                src={img.url}
-                alt="uploaded"
-                className="rounded-lg shadow-md w-full h-48 object-cover"
-              />
-              <div className="absolute bottom-0 bg-black bg-opacity-50 text-white text-xs p-1 w-full text-center rounded-b-lg">
-                Uploaded by: {img.uploadedBy?.name || "Unknown"}
+
+          <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5">
+
+            {spaceData.images.map((img, index) => (
+
+              <div
+                key={index}
+                className="relative overflow-hidden rounded-3xl group break-inside-avoid"
+              >
+
+                <img
+                  src={img.url}
+                  alt="uploaded"
+                  className="w-full object-cover rounded-3xl transition duration-500 group-hover:scale-105"
+                />
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
+
+                {/* Uploader */}
+                <div className="absolute bottom-0 left-0 w-full p-4 opacity-0 group-hover:opacity-100 transition duration-500">
+
+                  <p className="text-sm text-gray-300">
+                    Uploaded by
+                  </p>
+
+                  <h3 className="text-lg font-semibold">
+                    {img.uploadedBy?.name || "Unknown"}
+                  </h3>
+
+                </div>
+
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-full border-2 border-dashed border-gray-300 rounded-lg h-40 flex items-center justify-center text-gray-400">
-            No images yet
+
+            ))}
+
           </div>
+
+        ) : (
+
+          <div className="flex items-center justify-center h-64 border border-dashed border-white/10 rounded-3xl bg-white/5 backdrop-blur-lg">
+
+            <p className="text-gray-500 text-lg">
+              No memories uploaded yet ✨
+            </p>
+
+          </div>
+
         )}
+
       </div>
 
-      {/* Upload Button (bottom right fixed) */}
+      {/* Floating Upload Button */}
       <button
         onClick={() => setShowUploadModal(true)}
-        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-full shadow-lg"
+        className="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-white text-black text-3xl font-light shadow-2xl hover:scale-110 transition duration-300 z-50"
       >
-        + Upload
+        +
       </button>
 
       {/* Upload Modal */}
@@ -88,9 +160,10 @@ export default function Space() {
         <UploadImagesModal
           spaceId={spaceData._id}
           onClose={() => setShowUploadModal(false)}
-          onUploadComplete={fetchSpace} // refresh after upload
+          onUploadComplete={fetchSpace}
         />
       )}
+
     </div>
   );
 }

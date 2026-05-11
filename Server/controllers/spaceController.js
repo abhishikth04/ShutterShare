@@ -1,4 +1,5 @@
 const Space = require("../models/Space");
+const mongoose = require("mongoose");
 
 function generateCode(length = 6) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -41,21 +42,54 @@ const createSpace = async (req, res) => {
 };
 
 const joinSpace = async (req, res) => {
-  const { publicCode, userId } = req.body;
+
+  const { publicCode } = req.body;
 
   try {
+
     const space = await Space.findOne({ publicCode });
 
-    if (!space) return res.status(404).json({ message: "Invalid code" });
-    if (space.members.includes(userId))
-      return res.status(400).json({ message: "User already joined" });
+    if (!space) {
 
-    space.members.push(userId);
+      return res.status(404).json({
+        message: "Invalid code",
+      });
+    }
+
+    const userId = req.user.userId;
+
+    // Check if already joined
+    const alreadyMember = space.members.some(
+      (member) => String(member) === String(userId)
+    );
+
+    if (alreadyMember) {
+
+      return res.status(400).json({
+        message: "User already joined",
+      });
+    }
+
+    // Push proper ObjectId
+    space.members.push(
+      new mongoose.Types.ObjectId(userId)
+    );
+
     await space.save();
 
-    res.status(200).json({ message: "Joined space", space });
+    res.status(200).json({
+      message: "Joined space",
+      space,
+    });
+
   } catch (err) {
-    res.status(500).json({ message: "Error joining space", error: err.message });
+
+    console.error("❌ Join Space Error:", err);
+
+    res.status(500).json({
+      message: "Error joining space",
+      error: err.message,
+    });
   }
 };
 
