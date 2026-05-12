@@ -9,10 +9,56 @@ export default function Space() {
 
   const [spaceData, setSpaceData] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [timeLeft, setTimeLeft] = useState("");
 
   useEffect(() => {
     fetchSpace();
   }, [id]);
+
+  useEffect(() => {
+
+  if (!spaceData?.expiresAt) return;
+
+  const interval = setInterval(() => {
+
+    const now = new Date().getTime();
+
+    const expiry = new Date(spaceData.expiresAt).getTime();
+
+    const difference = expiry - now;
+
+    if (difference <= 0) {
+
+      setTimeLeft("Expired");
+
+      clearInterval(interval);
+
+      return;
+    }
+
+    const hours = Math.floor(
+      difference / (1000 * 60 * 60)
+    );
+
+    const minutes = Math.floor(
+      (difference % (1000 * 60 * 60)) /
+      (1000 * 60)
+    );
+
+    const seconds = Math.floor(
+      (difference % (1000 * 60)) / 1000
+    );
+
+    setTimeLeft(
+      `${hours}h ${minutes}m ${seconds}s`
+    );
+
+  }, 1000);
+
+  return () => clearInterval(interval);
+
+}, [spaceData]);
 
   async function fetchSpace() {
 
@@ -82,13 +128,14 @@ export default function Space() {
           </div>
 
           <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">
-            Expires:
-            <span className="ml-2 text-red-400">
-              {new Date(spaceData.expiresAt).toLocaleString()}
+            Expires In:
+            <span className="ml-2 text-red-400 font-semibold">
+              {timeLeft}
             </span>
           </div>
 
         </div>
+
       </div>
 
       {/* Gallery */}
@@ -102,7 +149,8 @@ export default function Space() {
 
               <div
                 key={index}
-                className="relative overflow-hidden rounded-3xl group break-inside-avoid"
+                onClick={() => setSelectedImage(img)}
+                className="relative overflow-hidden rounded-3xl group break-inside-avoid cursor-pointer"
               >
 
                 <img
@@ -162,6 +210,75 @@ export default function Space() {
           onClose={() => setShowUploadModal(false)}
           onUploadComplete={fetchSpace}
         />
+      )}
+
+      {/* Fullscreen Image Viewer */}
+      {selectedImage && (
+
+        <div
+          className="fixed inset-0 bg-black/90 backdrop-blur-xl z-[100] flex items-center justify-center p-6"
+          onClick={() => setSelectedImage(null)}
+        >
+
+          {/* Close Button */}
+          <button
+            className="absolute top-6 right-6 text-white text-4xl hover:scale-110 transition"
+          >
+            ×
+          </button>
+
+          <div
+            className="max-w-6xl max-h-[90vh] relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            {/* Action Buttons */}
+            <div className="absolute top-4 left-4 flex gap-3 z-10">
+
+              {/* Download */}
+              <a
+                href={selectedImage.url}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white text-sm"
+              >
+                ⬇ Download
+              </a>
+
+              {/* Future Like Button */}
+              <button
+                className="bg-white/10 backdrop-blur-xl border border-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white text-sm"
+              >
+                ♡ Like
+              </button>
+
+            </div>
+
+            {/* Image */}
+            <img
+              src={selectedImage.url}
+              alt="fullscreen"
+              className="max-h-[85vh] rounded-3xl shadow-2xl object-contain"
+            />
+
+            {/* Metadata */}
+            <div className="mt-4 text-center">
+
+              <p className="text-gray-400 text-sm">
+                Uploaded by
+              </p>
+
+              <h3 className="text-white text-xl font-semibold">
+                {selectedImage.uploadedBy?.name || "Unknown"}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
       )}
 
     </div>
