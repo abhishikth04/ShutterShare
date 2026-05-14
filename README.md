@@ -1,6 +1,10 @@
 # ShutterShare
 
-A modern collaborative gallery platform where users can create temporary shared spaces, upload memories together, and experience immersive media sharing in a cinematic interface.
+A modern collaborative gallery platform where users can create temporary shared spaces, upload memories together, and seamlessly share photos through a collaborative and interactive gallery experience.
+
+ShutterShare was built to simplify group photo sharing for events, trips, friends, teams, and communities. Instead of manually sending images across multiple messaging platforms, users can create dedicated shared spaces where everyone can contribute their memories in one organized gallery.
+
+The platform focuses on creating a smooth and engaging experience with temporary collaborative spaces, secure authentication, cloud-based image storage, modern gallery interactions, and responsive fullstack architecture. It combines scalable backend systems with a polished frontend experience to deliver a practical real-world media sharing application.
 
 ---
 
