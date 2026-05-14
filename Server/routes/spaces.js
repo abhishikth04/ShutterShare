@@ -12,11 +12,27 @@ router.post('/join', authMiddleware, joinSpace);
 
 // 🖼 Upload image to Cloudinary
 router.post('/:id/upload', authMiddleware, parser.single("image"), async (req, res) => {
+
   const { id } = req.params;
 
   try {
+
     const space = await Space.findById(id);
-    if (!space) return res.status(404).json({ message: "Space not found" });
+
+    if (!space) {
+
+      return res.status(404).json({
+        message: "Space not found"
+      });
+    }
+
+    // Prevent uploads to expired spaces
+    if (new Date(space.expiresAt) < new Date()) {
+
+      return res.status(410).json({
+        message: "Space expired"
+      });
+    }
 
     const image = {
       url: req.file.path,
@@ -25,30 +41,28 @@ router.post('/:id/upload', authMiddleware, parser.single("image"), async (req, r
     };
 
     space.images.push(image);
+
     await space.save();
 
-    res.status(200).json({ message: "Image uploaded successfully", image });
+    res.status(200).json({
+      message: "Image uploaded successfully",
+      image
+    });
+
   } catch (error) {
+
     console.error("Cloudinary Upload Error:", error);
-    res.status(500).json({ message: "Upload failed" });
+
+    res.status(500).json({
+      message: "Upload failed"
+    });
   }
 });
 
-// Get all spaces of logged-in user
-
+// Get all active spaces of logged-in user
 router.get("/my-spaces", authMiddleware, async (req, res) => {
 
   try {
-
-    console.log("======== MY SPACES DEBUG ========");
-
-    console.log("Logged in user:");
-    console.log(req.user);
-
-    const allSpaces = await Space.find();
-
-    console.log("All spaces:");
-    console.log(JSON.stringify(allSpaces, null, 2));
 
     const userObjectId = new mongoose.Types.ObjectId(
       req.user.userId
@@ -56,10 +70,8 @@ router.get("/my-spaces", authMiddleware, async (req, res) => {
 
     const spaces = await Space.find({
       members: userObjectId,
+      expiresAt: { $gt: new Date() },
     }).sort({ createdAt: -1 });
-
-    console.log("Matched spaces:");
-    console.log(spaces);
 
     res.status(200).json(spaces);
 
@@ -75,17 +87,37 @@ router.get("/my-spaces", authMiddleware, async (req, res) => {
 
 // Get space by ID
 router.get('/:id', authMiddleware, async (req, res) => {
+
   try {
-    const space = await Space.findById(req.params.id).populate("images.uploadedBy", "name");
+
+    const space = await Space.findById(req.params.id)
+      .populate("images.uploadedBy", "name");
+
     if (!space) {
-      return res.status(404).json({ message: "Space not found" });
+
+      return res.status(404).json({
+        message: "Space not found"
+      });
     }
+
+    // Prevent opening expired spaces
+    if (new Date(space.expiresAt) < new Date()) {
+
+      return res.status(410).json({
+        message: "Space expired"
+      });
+    }
+
     res.json(space);
+
   } catch (error) {
+
     console.error("Error fetching space:", error);
-    res.status(500).json({ message: "Server error" });
+
+    res.status(500).json({
+      message: "Server error"
+    });
   }
 });
-
 
 module.exports = router;

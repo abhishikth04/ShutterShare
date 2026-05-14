@@ -11,6 +11,7 @@ export default function Space() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [timeLeft, setTimeLeft] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchSpace();
@@ -83,6 +84,26 @@ export default function Space() {
     }
   }
 
+  const copyCode = async () => {
+
+  try {
+
+    await navigator.clipboard.writeText(
+      spaceData.publicCode
+    );
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+
+  } catch (err) {
+
+    console.error("Failed to copy code:", err);
+  }
+};
+
   if (!spaceData) {
 
     return (
@@ -113,11 +134,35 @@ export default function Space() {
         {/* Metadata */}
         <div className="flex flex-wrap justify-center gap-4 mt-8">
 
-          <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">
-            Code:
-            <span className="ml-2 font-mono text-blue-400">
+          <div
+            className="group bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300 flex items-center gap-4 relative"
+          >
+
+            {/* Label */}
+            <span className="text-gray-400 text-base">
+              Public Code
+            </span>
+
+            {/* Code */}
+            <span className="font-mono text-blue-400 text-xl tracking-wide">
               {spaceData.publicCode}
             </span>
+
+            {/* Copy Button */}
+            <button
+              onClick={copyCode}
+              className="text-sm hover:scale-110 transition"
+            >
+              {copied ? "✅" : "📋"}
+            </button>
+
+            {/* Hover Tooltip */}
+            <div
+              className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black/80 text-white text-xs px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none whitespace-nowrap"
+            >
+              {copied ? "Copied!" : "Click to copy code"}
+            </div>
+
           </div>
 
           <div className="bg-white/5 border border-white/10 backdrop-blur-lg px-5 py-3 rounded-full text-lg text-gray-300">

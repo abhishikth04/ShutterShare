@@ -44,13 +44,43 @@ export default function Dashboard() {
 
       <main className="p-6 space-y-10">
 
-        <h2 className='text-gray-100 text-5xl ml-4 mt-3 font-semibold drop-shadow-[1px_1px_6px_grey]'>
+        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-2xl px-8 py-8">
 
-          <i>
-            Welcome{userName ? `, ${userName}` : ""}
-          </i>
+  {/* Soft Glow */}
+  <div className="absolute top-0 left-0 w-48 h-48 bg-blue-500/10 blur-3xl rounded-full" />
 
-        </h2>
+  <div className="absolute bottom-0 right-0 w-48 h-48 bg-purple-500/10 blur-3xl rounded-full" />
+
+  {/* Content */}
+  <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+
+    {/* Left */}
+    <div>
+
+      <h1 className="text-4xl md:text-5xl font-semibold text-white tracking-tight">
+
+        Welcome back,
+        <span className="ml-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+
+          {userName || "Creator"}
+
+        </span>
+
+      </h1>
+
+      <p className="text-gray-400 mt-3 text-base md:text-lg">
+
+        Continue building and sharing beautiful memories.
+
+      </p>
+
+    </div>
+
+    
+
+  </div>
+
+</div>
 
         <CreateJoin />
 
